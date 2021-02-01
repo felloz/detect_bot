@@ -1,5 +1,5 @@
-#Author: Luis Serrano
-#Python verison: 3.0
+# Author: Luis Serrano
+# Python verison: 3.0
 import reg_funcs
 
 file = open('log.log')
@@ -9,7 +9,7 @@ action_list = []
 equal_dates = []
 user_list = []
 ip_address_list = []
-compar_date = ''
+first_row = True
 i = 0
 print('==========================================================================')
 print('                           Bot Detection System')
@@ -19,21 +19,22 @@ print("")
 for line in file:
     text = str(line)
 
-    #Load variables extracting the data with Regular Expressions
-    date = reg_funcs.find_text('[A-Z]\w+[,\/]\s\d\d\s[A-Z]\w+\s\d{4}\s\d\d[:\/]\d\d[:\/]\d\d', text)
+    # Load variables extracting the data with Regular Expressions
+    date = reg_funcs.find_text(
+        '[A-Z]\w+[,\/]\s\d\d\s[A-Z]\w+\s\d{4}\s\d\d[:\/]\d\d[:\/]\d\d', text)
     user = reg_funcs.find_text('[|[A-Z]\w+[|\/]', text)
     action = reg_funcs.find_text('\w*user\w*\s[a-z]\w+\s[a-z]\w+', text)
-    #not used for now
+    # not used for now
     ip_address = reg_funcs.find_text('(\d+[.\/]\d+[.\/]\d+[.\/]\d+)', text)
 
-    #Fill the arrays
-    if compar_date == '':
+    # Fill the arrays
+    if first_row:
         date_list.append(date)
         action_list.append(action)
         user_list.append(user)
-        compar_date = date
+        first_row = False
     else:
-        #Validate than the actions occurs in the same second
+        # Validate than the actions occurs in the same second
         if date_list[0] == date:
             date_list.append(date)
             action_list.append(action)
